@@ -1,6 +1,6 @@
 # 📄 AI PDF Summarizer
 
-An AI-powered PDF summarization application that extracts text from PDF documents and generates concise summaries using a Large Language Model (LLM).
+An AI-powered PDF summarization application that extracts text from PDF documents, processes large documents in chunks, and generates a concise final summary using a Large Language Model (LLM).
 
 Built with **Python, Streamlit, PyMuPDF, and Groq**.
 
@@ -12,7 +12,8 @@ Built with **Python, Streamlit, PyMuPDF, and Groq**.
 * 🔍 Extract text from PDFs
 * 🧹 Clean extracted text
 * ✂️ Split large documents into chunks
-* 🤖 Generate AI-powered summaries
+* 🤖 Summarize each document chunk using an LLM
+* 🧠 Combine chunk summaries into one final summary
 * 📊 Display PDF statistics
 * ⚡ Simple and interactive Streamlit interface
 
@@ -21,23 +22,67 @@ Built with **Python, Streamlit, PyMuPDF, and Groq**.
 ## 🏗️ Project Architecture
 
 ```text
-             PDF Upload
-                  │
-                  ▼
-          PyMuPDF Extraction
-                  │
-                  ▼
-            Text Cleaning
-                  │
-                  ▼
-              Chunking
-                  │
-                  ▼
-             Groq LLM
-                  │
-                  ▼
-           AI Generated Summary
+                    PDF Upload
+                         │
+                         ▼
+                PyMuPDF Extraction
+                         │
+                         ▼
+                   Text Cleaning
+                         │
+                         ▼
+                      Chunking
+                         │
+             ┌───────────┴───────────┐
+             ▼           ▼           ▼
+          Chunk 1     Chunk 2     Chunk N
+             │           │           │
+             ▼           ▼           ▼
+         Summary 1    Summary 2    Summary N
+             │           │           │
+             └───────────┬───────────┘
+                         ▼
+                Combine Summaries
+                         │
+                         ▼
+                  Final LLM Summary
+                         │
+                         ▼
+                  Display Result
 ```
+
+---
+
+## 🧠 Summarization Approach
+
+The application uses a **Map → Reduce** style summarization approach.
+
+### Map
+
+Each document chunk is independently sent to the LLM and summarized.
+
+```text
+Chunk 1 → Summary 1
+Chunk 2 → Summary 2
+Chunk 3 → Summary 3
+...
+```
+
+### Reduce
+
+The individual summaries are combined and sent to the LLM again to produce one final document summary.
+
+```text
+Summary 1
+Summary 2
+Summary 3
+   ↓
+Combined Summaries
+   ↓
+Final AI Summary
+```
+
+This allows the application to process documents that are larger than a single LLM input.
 
 ---
 
@@ -86,15 +131,29 @@ The extracted text is cleaned by removing unnecessary whitespace and formatting.
 
 ### 4. Chunk Text
 
-Large documents are divided into smaller text chunks so they can be processed by the language model.
+The document is divided into smaller chunks.
 
-### 5. Generate Summary
+The current chunk size is:
 
-The text is sent to a Groq-hosted LLM with a summarization prompt.
+```text
+3000 characters
+```
 
-### 6. Display Result
+### 5. Summarize Each Chunk
 
-The generated summary is displayed in the Streamlit application.
+Each chunk is sent to the Groq-hosted LLM and summarized independently.
+
+### 6. Combine Chunk Summaries
+
+The individual summaries are combined into a single text representation.
+
+### 7. Generate Final Summary
+
+The combined summaries are sent to the LLM again to create the final document summary.
+
+### 8. Display Result
+
+The final AI-generated summary is displayed in the Streamlit application.
 
 ---
 
@@ -148,7 +207,7 @@ The application will open in your browser.
 
 ## 📊 Current Version
 
-### V1
+### V2 — Full Document Summarization
 
 The current version supports:
 
@@ -156,8 +215,27 @@ The current version supports:
 * PDF text extraction
 * Text cleaning
 * Text chunking
-* AI summarization
+* Multi-chunk processing
+* Chunk-level AI summarization
+* Combined final summarization
 * PDF statistics
+* Streamlit interface
+
+### Example
+
+A document containing:
+
+```text
+3284 characters
+```
+
+is divided into:
+
+```text
+2 chunks
+```
+
+Each chunk is summarized separately, and the results are then combined to generate the final summary.
 
 ---
 
@@ -165,13 +243,12 @@ The current version supports:
 
 Planned improvements include:
 
-* 📝 Full-document summarization for large PDFs
 * 📌 Summary length selection
 * 📚 Multiple summarization styles
 * 📄 Page-wise summaries
 * 🔎 Keyword extraction
 * 📑 Key points and highlights
-* 🧠 Better long-document processing
+* 🧠 Improved long-document processing
 * 💬 Chat with PDF
 * 📥 Download generated summaries
 * 🔐 Improved API and error handling
@@ -209,4 +286,10 @@ B.Tech Computer Science & Engineering
 
 Interested in:
 
-* Artificial
+* Artificial Intelligence
+* Machine Learning
+* NLP
+* LLM Applications
+* RAG
+* Data Science
+* UI/UX Design
