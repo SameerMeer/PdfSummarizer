@@ -1,7 +1,7 @@
 import streamlit as st
 import pymupdf
 
-from summarizer import summarize_text
+from summarizer import summarize_document
 
 
 # ==========================================
@@ -189,8 +189,8 @@ if uploaded_file:
                 "Generating summary..."
             ):
 
-                summary = summarize_text(
-                    chunks[0]
+                summary = summarize_document(
+                    chunks
                 )
 
             st.success(
